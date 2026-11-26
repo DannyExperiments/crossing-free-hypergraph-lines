@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Line intersections record flats</title>
+<style>
+*{box-sizing:border-box}body{background:#f4f7fa;color:#17273b;font:1rem/1.45 system-ui,sans-serif;margin:0;padding:1.15rem}main{max-width:42rem;margin:auto}h1{font-size:clamp(1.7rem,5vw,2.5rem);line-height:1.11;margin:.1rem 0 .8rem}p{margin:.7rem 0}.choices{display:flex;gap:.4rem;flex-wrap:wrap;margin:.7rem 0}button{font:inherit;font-weight:700;border:1px solid #788ca5;background:#fff;color:inherit;padding:.48rem .76rem;border-radius:.55rem}button[aria-pressed=true]{background:#17273b;color:#fff}button:focus-visible,input:focus-visible{outline:3px solid #0070ad;outline-offset:3px}canvas{display:block;width:100%;height:auto;border:1px solid #bdcbdd;background:#fff;border-radius:.9rem}#result{min-height:5em;font-weight:600}label{display:block;margin:1rem 0}
+</style>
+<main>
+<h1>Line intersections record flats</h1>
+<p>Pick two edges. Their two lines meet at the point for the flat that contains both. Three edges can meet at one vertex.</p>
+<div class="choices" id="choices" aria-label="Line pairs"></div>
+<canvas id="diagram" width="680" height="520" role="img" aria-label="Four differently colored lines with their intersection points marked"></canvas>
+<label><input type="checkbox" id="omit"> Remove the selected shared vertex from the drawing</label>
+<p id="result" aria-live="polite"></p>
+<p>The full equations are A&nbsp; y = 0, B&nbsp; x = 0, C&nbsp; y = x, and D&nbsp; x + y = 2. The drawing clips them at the viewing window.</p>
+</main>
+<script>
+'use strict';
+const labels = ['A', 'B', 'C', 'D'];
+const rows = [[0,1,0],[1,0,0],[1,-1,0],[1,1,-2]];
+const colors = ['#0070ad','#b14725','#663ca0','#16775c'];
+const ends = [[[-.8,0],[3.05,0]],[[0,-.43],[0,2.88]],[[-.43,-.43],[2.81,2.81]],[[-.77,2.77],[2.43,-.43]]];
+const anchors = [[610,401],[200,38],[602,42],[88,40]];
+const project = ([x,y]) => [172+x*147,432-y*131];
+const canvas = document.querySelector('#diagram');
+const ctx = canvas.getContext('2d');
+const choices = document.querySelector('#choices');
+const omit = document.querySelector('#omit');
+const result = document.querySelector('#result');
+const pairs = labels.flatMap((a,i) => labels.slice(i+1).map((b,k) => [i,i+k+1]));
+const meets = pairs.map(([i,j]) => {
+  const [a,b,c] = rows[i];
+  const [d,e,f] = rows[j];
+  const w = a*e-b*d;
+  const x = (b*f-c*e)/w;
+  const y = (c*d-a*f)/w;
+  return {x,y,flat:labels.filter((_, k) => rows[k][0]*x+rows[k][1]*y+rows[k][2] === 0).join('')};
+});
+const distinct = [...new Map(meets.map(point => [point.flat,point])).values()];
+let selected = 0;
+function stroke(a,b,color,width) {
+  ctx.strokeStyle=color;ctx.lineWidth=width;
+  ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();
+}
+function draw() {
+  const candidate = meets[selected];
+  ctx.clearRect(0,0,680,520);
+  for (const tick of [0,1,2]) {
+    const [x,y] = project([tick,tick]);
+    stroke([x,35],[x,490],'#e2eaf3',2);stroke([46,y],[638,y],'#e2eaf3',2);
+  }
+  for (let k=0;k<labels.length;k++) {
+    const active = pairs[selected].includes(k);
+    ctx.globalAlpha=active?1:.55;
+    stroke(project(ends[k][0]),project(ends[k][1]),colors[k],active?8:5);
+    ctx.fillStyle=colors[k];ctx.font='bold 29px system-ui';ctx.fillText(labels[k],...anchors[k]);
+  }
+  ctx.globalAlpha=1;
+  const offsets = {ABC:[-116,36],AD:[20,-25],BD:[19,-9],CD:[27,-17]};
+  for (const point of distinct) {
+    const active = point.flat === candidate.flat;
+    const [x,y] = project([point.x,point.y]);
+    const [ox,oy] = offsets[point.flat];
+    if (active) {
+      ctx.beginPath();ctx.arc(x,y,17,0,2*Math.PI);
+      ctx.strokeStyle=omit.checked?'#ad2724':'#b37206';ctx.lineWidth=4;ctx.stroke();
+    }
+    if (active&&omit.checked) {
+      stroke([x-7,y-7],[x+7,y+7],'#ad2724',4);stroke([x-7,y+7],[x+7,y-7],'#ad2724',4);
+    } else {
+      ctx.fillStyle='#17273b';ctx.beginPath();ctx.arc(x,y,8,0,2*Math.PI);ctx.fill();
+    }
+    ctx.fillStyle=active&&omit.checked?'#ad2724':'#17273b';ctx.font='bold 28px system-ui';ctx.fillText(point.flat,x+ox,y+oy);
+  }
+  const pair = pairs[selected].map(i => labels[i]).join(' and ');
+  const location = `(${candidate.x}, ${candidate.y})`;
+  result.textContent=omit.checked
+    ? `${pair} still meet at ${location}. The drawing fails the crossing-free rule because that point is no longer a shared vertex.`
+    : `${pair} meet at ${location}, the designated vertex for {${[...candidate.flat].join(', ')}}. ${candidate.flat.length===3?'All three lines concur there.':'Exactly two lines meet there.'}`;
+}
+for (const [index,pair] of pairs.entries()) {
+  const button=document.createElement('button');
+  button.type='button';button.textContent=pair.map(i=>labels[i]).join('');
+  button.setAttribute('aria-pressed',String(index===0));
+  button.addEventListener('click',()=>{
+    selected=index;
+    for (const [k,choice] of [...choices.children].entries()) choice.setAttribute('aria-pressed',String(k===index));
+    draw();
+  });
+  choices.appendChild(button);
+}
+omit.addEventListener('change',draw);
+draw();
+</script>
+</html>

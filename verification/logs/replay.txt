@@ -1,0 +1,3 @@
+Worked arrangement: 6 marked line pairs, 4 distinct crossings, determinant pattern 0, 2, 2, 2.
+All 4 single-deletion variants reject the fixed drawing; a disjoint parallel pair passes.
+202 exact rank-three configurations passed closure, incidence, and reverse-basis checks.

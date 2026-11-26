@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "Cite this version of the research release."
+title: "Crossing-free line representations of hypergraphs"
+authors:
+  - name: "DannyExperiments"
+type: software
+version: "1.0.0"
+date-released: 2026-11-27
+repository-code: "https://github.com/DannyExperiments/crossing-free-hypergraph-lines"
+keywords:
+  - "computational geometry"
+  - "hypergraphs"
+  - "matroid representability"
+  - "existential theory of the reals"
+doi: "10.5281/zenodo.24569558"
+url: "https://doi.org/10.5281/zenodo.24569558"
+preferred-citation:
+  type: software
+  title: "Crossing-free line representations of hypergraphs"
+  authors:
+    - name: "DannyExperiments"
+  version: "1.0.0"
+  date-released: 2026-11-27
+  doi: "10.5281/zenodo.24569558"
+  url: "https://doi.org/10.5281/zenodo.24569558"
+  repository-code: "https://github.com/DannyExperiments/crossing-free-hypergraph-lines"

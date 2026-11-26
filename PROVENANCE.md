@@ -1,0 +1,5 @@
+# Provenance
+
+Dobler’s TU Wien dissertation asks the recognition question in §5.6. Dobler, Kobourov, Mondal and Nöllenburg ask it in §7 of their journal paper. The catalog statement is pinned to revision `ca8d4d44ba3db527f19f28928c240168f545ecfe`. [Thesis](https://doi.org/10.34726/hss.2026.139471) · [Journal](https://doi.org/10.46298/dmtcs.15876) · [Pinned Q233](https://github.com/10m-u/open-problems-catalog/blob/ca8d4d44ba3db527f19f28928c240168f545ecfe/problems/computer_science_ai/theory-of-computation-algorithms-part-1.md#q233)
+
+The manuscript expands the recovered proof of the corollary. Hardness comes from Theorem 1 of Kim, de Mesmay and Miltzow and the standard intersection-lattice correspondence for simple matroids. The exact replay reconstructs the incidence map from bases and checks the return from affine line rows to those bases. [Matroid theorem](https://doi.org/10.46298/dmtcs.10810) · [Arrangement correspondence](https://doi.org/10.1007/s12215-024-01047-x) · [AI disclosure](AI_DISCLOSURE.md)

@@ -1,0 +1,13 @@
+{
+  "title": "Crossing-free line representations of hypergraphs",
+  "upload_type": "software",
+  "publication_date": "2026-11-27",
+  "version": "1.0.0",
+  "creators": [{"name": "DannyExperiments"}],
+  "keywords": ["computational geometry", "hypergraphs", "matroid representability", "existential theory of the reals"],
+  "description": "<p>Recognizing a crossing-free representation of a hypergraph by complete affine lines is complete for the existential theory of the reals, even when each pair of hyperedges shares exactly one vertex. The classification follows from the rank-three real matroid representability theorem of Eun Jung Kim, Arnaud de Mesmay and Tillmann Miltzow and the established intersection-lattice correspondence.</p><p>The exact replay checks the construction on 202 rank-three configurations. The accompanying illustration and offline explorer show all six pairwise meetings in a worked four-line arrangement. The result has undergone internal review. External peer review is pending.</p><p>ChatGPT Astra 6.2 (OpenAI) generated the recovered proof and replay under human direction. Claude Opus 5.5 (Anthropic) assisted with earlier audits. OpenAI Codex checked the construction. GPT-6.2 Sol (OpenAI) checked the primary sources and prepared the manuscript, expanded replay and worked illustration. DannyExperiments is the project citation identity.</p>",
+  "access_right": "open",
+  "license": "other-closed",
+  "notes": "All rights reserved. Publicly downloadable files are supplied without a repository-wide reuse license.",
+  "related_identifiers": [{"identifier": "https://github.com/DannyExperiments/crossing-free-hypergraph-lines/releases/tag/v1.0.0", "relation": "isSupplementTo", "resource_type": "software"}]
+}

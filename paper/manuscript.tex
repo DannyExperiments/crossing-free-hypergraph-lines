@@ -1,0 +1,60 @@
+\documentclass[11pt,a4paper]{amsart}
+\usepackage[margin=.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage[hidelinks]{hyperref}
+\urlstyle{same}
+\hypersetup{pdftitle={Crossing-free line representations of hypergraphs}}
+\setlength{\emergencystretch}{2em}
+\DeclareMathSizes{8}{8}{8}{8}
+\DeclareMathSizes{9}{9}{8}{8}
+\DeclareMathSizes{10.95}{10.95}{8}{8}
+\renewcommand{\bibliofont}{\normalsize}
+\newtheorem{theorem}{Theorem}
+\newcommand{\ER}{\ensuremath{\exists\mathbb R}}
+\title[Crossing-free line representations]{Crossing-free line representations of hypergraphs}
+\date{}
+\begin{document}
+\begin{abstract}
+Dobler, Kobourov, Mondal and N\"ollenburg ask for the complexity of recognizing crossing-free complete-line representations of hypergraphs. This recognition problem is \ER-complete, even for linear hypergraphs with pairwise intersecting edges. The lower bound is a direct corollary of real rank-three matroid representability and the intersection-lattice correspondence. Recording every rank-two flat as a vertex accounts for each meeting of two lines.
+\end{abstract}
+\maketitle
+
+\section{The recognition problem}
+A representation of a finite hypergraph $H=(V,E)$ assigns distinct points of $\mathbb R^2$ to vertices and distinct complete affine lines to hyperedges, with a point on a line exactly when the vertex belongs to the edge. It is crossing-free when two lines meet exactly when the corresponding edges share a vertex. In particular, disjoint edges must have parallel lines and each meeting of lines lies at an assigned vertex. This is the first question of \cite[\S7]{dobleretal} and \cite[\S5.6]{doblerthesis}. A hypergraph is linear if distinct edges share at most one vertex.
+
+\begin{theorem}
+This recognition problem is \ER-complete under polynomial-time many-one reductions. Hardness holds for linear hypergraphs with pairwise intersecting edges.
+\end{theorem}
+
+\section{Polynomial constraints}
+For each vertex use a point $p_v=(x_v,y_v)$. For each edge use a coefficient row $r_e=(a_e,b_e,c_e)$ and impose $a_e^2+b_e^2>0$. Require distinct points to have positive squared distance. For each pair of rows, require $\|r_e\times r_f\|^2>0$ to give distinct lines. For all vertex-edge pairs and pairs of distinct edges, impose the following conditions respectively.
+\begin{align*}
+\text{Incidence}\qquad a_e x_v+b_e y_v+c_e&=0 \quad\Longleftrightarrow\quad v\in e,\\
+\text{Crossing}\qquad a_e b_f-a_f b_e&=0 \quad\Longleftrightarrow\quad e\cap f=\varnothing.
+\end{align*}
+A pair of distinct affine lines meets precisely when the direction determinant is nonzero. These polynomial constraints give an existential real formula of polynomial size.
+
+\section{The rank-three construction}
+Real representability of rank-three matroids is \ER-hard by \cite[Theorem~1]{kim}. We may assume the input matroid is simple. Delete loops and keep one element from each parallel class. This preserves rank and representability in both directions, since a representation of the simplified matroid extends by zero vectors for loops and nonzero multiples for the discarded parallel elements. The fixed rank permits polynomial-size lists of bases and polynomial-time simplification.
+
+Let $M$ be the resulting simple rank-three matroid on $S$. For distinct $s,t\in S$, the rank-two flat through them is
+\[
+ F(s,t)=\{s,t\}\cup\{u\in S\setminus\{s,t\}:\{s,t,u\}\text{ is dependent in }M\}.
+\]
+Enumerate and deduplicate these sets. The output has a vertex $v_F$ for each flat and an edge $E_s=\{v_F:s\in F\}$ for each $s\in S$. For distinct $s,t$, their edges meet at the single vertex $v_{F(s,t)}$. The edges are distinct because some $u$ lies outside $F(s,t)$ and $v_{F(s,u)}$ belongs to $E_s$ but not $E_t$. There are at most $\binom{|S|}{2}$ flats, and the construction is polynomial. In particular it records ordinary double intersections as well as higher multiplicities.
+
+\subsection{From vectors to an affine arrangement}
+Suppose $M$ is represented by vectors $p_s\in\mathbb R^3$. Simplicity gives nonzero, pairwise nonproportional vectors. In the projective plane with homogeneous coordinate $[z]$, take the dual lines $\ell_s$ defined by $p_s\cdot z=0$. For each flat $F$, its vectors span a two-dimensional subspace, whose annihilator is a projective point $z_F$. Different flats have different spans because a flat contains every input vector in its span. Therefore the points $z_F$ are distinct. The rule $z_F\in\ell_s$ holds exactly when $s\in F$. Each pair $\ell_s,\ell_t$ meets at $z_{F(s,t)}$.
+
+Choose a projective line at infinity missing the finitely many points $z_F$. The prohibited coefficients lie in a finite union of proper planes, which cannot exhaust $\mathbb R^3$. Each $\ell_s$ contains such a point, so each survives as a complete affine line in the resulting chart. Every designated point and every pairwise meeting stays in the chart. This is a crossing-free representation.
+
+\subsection{From affine lines to vectors}
+Conversely, suppose the output has a crossing-free representation. Use the homogeneous coefficient row $p_s=(a_s,b_s,c_s)$ of the line for $E_s$. Each row is nonzero, and distinct lines give independent pairs. The common projective kernel of $p_s,p_t$ is the point assigned to $v_{F(s,t)}$. For any third $u$, the determinant of the three rows is zero exactly when the third line contains that point. Exact incidence gives this precisely when $u\in F(s,t)$. Thus the rows realize exactly the independent triples of $M$. Every singleton and pair is independent, and all larger sets are dependent in $\mathbb R^3$. The rows represent $M$, completing the reduction.
+
+\section{Relation to prior results}
+The projective step is the standard correspondence between a simple matroid's lattice of flats and the intersection lattice of its dual hyperplane arrangement \cite[\S2.1]{kuhne}. Here the hypergraph records the rank-two part and retains all crossings in an affine chart. Dobler et al. prove hardness for ordinary line representations by a Pappus-gadget reduction and use duality for a corollary \cite[Theorem 2 and Corollary 1]{dobleretal}. Their crossing-free polynomial cases for hypergraph rank at most two or maximum vertex degree at most two remain distinct \cite[Theorems 7 and 8]{dobleretal}. The rank-three restriction here refers to the input matroid. The construction permits arbitrary hyperedge size and vertex degree.
+
+\bibliographystyle{amsplain}
+\bibliography{references}
+\end{document}
